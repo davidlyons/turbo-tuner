@@ -26,30 +26,20 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+import { presetKeysSchema, formSchema, settings } from './settings'
+
 // https://react-hook-form.com/
 // https://zod.dev/
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  firstname: z.string().min(2, {
-    message: 'First name must be at least 2 characters.',
-  }),
-  mode: z.enum(['Open Tuning', 'Temperament']),
-})
+//
 
 export function TunerForm() {
-  const [value, setValue] = useState('GUIT')
+  const [activePreset, setActivePreset] = useState<z.infer<typeof presetKeysSchema>>('GUIT')
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: '',
-      firstname: '',
-      mode: 'Open Tuning',
-    },
+    defaultValues: settings,
   })
 
   // https://react-hook-form.com/docs/useform/watch
@@ -70,24 +60,24 @@ export function TunerForm() {
         className="mb-8"
         size="lg"
         // https://www.radix-ui.com/primitives/docs/components/toggle-group#ensuring-there-is-always-a-value
-        value={value}
-        onValueChange={(value) => {
-          if (value) setValue(value)
+        value={activePreset}
+        onValueChange={(value: z.infer<typeof presetKeysSchema>) => {
+          if (value) setActivePreset(value)
         }}
       >
-        <ToggleGroupItem value="GUIT" aria-label="Toggle GUIT">
+        <ToggleGroupItem value="GUIT" aria-label="Edit GUIT preset">
           GUIT
         </ToggleGroupItem>
-        <ToggleGroupItem value="BASS" aria-label="Toggle BASS">
+        <ToggleGroupItem value="BASS" aria-label="Edit BASS preset">
           BASS
         </ToggleGroupItem>
-        <ToggleGroupItem value="CST1" aria-label="Toggle CST1">
+        <ToggleGroupItem value="CST1" aria-label="Edit CST1 preset">
           CST1
         </ToggleGroupItem>
-        <ToggleGroupItem value="CST2" aria-label="Toggle CST2">
+        <ToggleGroupItem value="CST2" aria-label="Edit CST2 preset">
           CST2
         </ToggleGroupItem>
-        <ToggleGroupItem value="CST3" aria-label="Toggle CST3">
+        <ToggleGroupItem value="CST3" aria-label="Edit CST3 preset">
           CST3
         </ToggleGroupItem>
       </ToggleGroup>
@@ -96,37 +86,8 @@ export function TunerForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="mb-8 space-y-8">
           <FormField
             control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>This is your public display name.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="firstname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>This is your first name.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="mode"
+            name={`presets.${activePreset}.mode`}
+            key={`presets.${activePreset}.mode`}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Mode</FormLabel>
@@ -137,7 +98,7 @@ export function TunerForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Open Tuning">Open Tuning</SelectItem>
+                    <SelectItem value="OpenTuning">Open Tuning</SelectItem>
                     <SelectItem value="Temperament">Temperament</SelectItem>
                   </SelectContent>
                 </Select>
@@ -150,9 +111,8 @@ export function TunerForm() {
         </form>
       </Form>
 
-      <div>Username: {form.getValues().username}</div>
-      <div>First name: {form.getValues().firstname}</div>
-      <div>First name: {form.getValues().mode}</div>
+      <div>GUIT Mode: {form.getValues().presets.GUIT?.mode}</div>
+      <div>BASS Mode: {form.getValues().presets.BASS?.mode}</div>
     </>
   )
 }
