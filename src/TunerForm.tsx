@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,6 +39,7 @@ export function TunerForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: settings,
   })
 
@@ -57,7 +58,7 @@ export function TunerForm() {
       <ToggleGroup
         type="single"
         variant="outline"
-        className="mb-8"
+        className="mb-8 w-full"
         size="lg"
         // https://www.radix-ui.com/primitives/docs/components/toggle-group#ensuring-there-is-always-a-value
         value={activePreset}
@@ -93,7 +94,7 @@ export function TunerForm() {
                 <FormLabel>Mode</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a mode" />
                     </SelectTrigger>
                   </FormControl>
@@ -107,12 +108,208 @@ export function TunerForm() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          {/* Show OpenTuning fields if mode is OpenTuning */}
+          {form.watch(`presets.${activePreset}.mode`) === 'OpenTuning' && (
+            <>
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.OpenTuning.name`}
+                key={`presets.${activePreset}.OpenTuning.name`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.OpenTuning.A4`}
+                key={`presets.${activePreset}.OpenTuning.A4`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>A4</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="default or frequency"
+                        value={field.value === 'default' ? '' : (field.value ?? '')}
+                        onChange={(e) => {
+                          const val = e.target.value
+                          field.onChange(val === '' ? 'default' : Number(val))
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.OpenTuning.Transpose`}
+                key={`presets.${activePreset}.OpenTuning.Transpose`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Transpose</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={field.value ?? ''}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Strings array */}
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.OpenTuning.strings`}
+                key={`presets.${activePreset}.OpenTuning.strings`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Strings</FormLabel>
+                    <div className="space-y-2">
+                      {Array.isArray(field.value) &&
+                        field.value.map((stringObj, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <span className="w-8 shrink-0">{idx + 1}</span>
+                            <Input
+                              placeholder="Note"
+                              value={stringObj.note}
+                              onChange={(e) => {
+                                const newArr = [...field.value]
+                                newArr[idx] = { ...newArr[idx], note: e.target.value }
+                                field.onChange(newArr)
+                              }}
+                            />
+                            <Input
+                              type="number"
+                              placeholder="Offset"
+                              value={stringObj.offset}
+                              onChange={(e) => {
+                                const newArr = [...field.value]
+                                newArr[idx] = { ...newArr[idx], offset: Number(e.target.value) }
+                                field.onChange(newArr)
+                              }}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
+          {/* Show Temperament fields if mode is Temperament */}
+          {form.watch(`presets.${activePreset}.mode`) === 'Temperament' && (
+            <>
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.Temperament.name`}
+                key={`presets.${activePreset}.Temperament.name`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.Temperament.A4`}
+                key={`presets.${activePreset}.Temperament.A4`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>A4</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="default or frequency"
+                        value={field.value === 'default' ? '' : (field.value ?? '')}
+                        onChange={(e) => {
+                          const val = e.target.value
+                          field.onChange(val === '' ? 'default' : Number(val))
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.Temperament.Transpose`}
+                key={`presets.${activePreset}.Temperament.Transpose`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Transpose</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={field.value ?? ''}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Note offsets */}
+              <FormField
+                control={form.control}
+                name={`presets.${activePreset}.Temperament.offsets`}
+                key={`presets.${activePreset}.Temperament.offsets`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Offsets</FormLabel>
+                    <div className="space-y-2">
+                      {field.value &&
+                        Object.entries(field.value).map(([note, offset]) => (
+                          <div key={note} className="flex items-center gap-2">
+                            <span className="w-8 shrink-0">{note}</span>
+                            <Input
+                              type="number"
+                              value={offset}
+                              onChange={(e) => {
+                                field.onChange({
+                                  ...field.value,
+                                  [note]: Number(e.target.value),
+                                })
+                              }}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
+          <Button type="submit" className="w-full">
+            Console Log
+          </Button>
         </form>
       </Form>
-
-      <div>GUIT Mode: {form.getValues().presets.GUIT?.mode}</div>
-      <div>BASS Mode: {form.getValues().presets.BASS?.mode}</div>
     </>
   )
 }

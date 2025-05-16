@@ -6,7 +6,7 @@ const notesKeysSchema = z.enum(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#',
 const modeSettingsSchema = z.object({
   name: z.string(),
   A4: z.union([z.literal('default'), z.string(), z.number()]),
-  Transpose: z.number(),
+  Transpose: z.number().min(0, { message: 'too small' }).max(9, { message: 'too big' }),
 })
 
 const presetSchema = z.object({

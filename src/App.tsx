@@ -5,9 +5,9 @@ function App() {
     <>
       <div className="py-14">
         <div className="container">
-          <h1 className="mb-10 text-4xl">Turbo Tuner Settings</h1>
+          <h1 className="mb-10 text-3xl">Turbo Tuner Settings</h1>
 
-          <div className="md:w-1/2">
+          <div className="max-w-xs">
             <TunerForm />
           </div>
         </div>
