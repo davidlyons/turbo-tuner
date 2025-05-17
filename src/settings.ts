@@ -3,10 +3,14 @@ import { z } from 'zod'
 export const presetKeysSchema = z.enum(['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'])
 const notesKeysSchema = z.enum(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
 
+const TransposeSchema = z.number().min(-9, { message: 'Too low' }).max(9, { message: 'Too high' })
+const A4Schema = z.number().min(300).max(599.9)
+const offsetSchema = z.number().min(-50).max(50)
+
 const modeSettingsSchema = z.object({
   name: z.string(),
-  A4: z.union([z.literal('default'), z.string(), z.number()]),
-  Transpose: z.number().min(0, { message: 'too small' }).max(9, { message: 'too big' }),
+  A4: z.union([z.literal('default'), z.string(), A4Schema]),
+  Transpose: TransposeSchema,
 })
 
 const presetSchema = z.object({
@@ -16,21 +20,21 @@ const presetSchema = z.object({
       strings: z.array(
         z.object({
           note: z.string(),
-          offset: z.number(),
+          offset: offsetSchema,
         })
       ),
     })
   ),
   Temperament: modeSettingsSchema.and(
     z.object({
-      offsets: z.record(notesKeysSchema, z.number()),
+      offsets: z.record(notesKeysSchema, offsetSchema),
     })
   ),
 })
 
 export const formSchema = z.object({
-  A4Default: z.number(),
-  Transpose: z.number(),
+  A4Default: A4Schema,
+  Transpose: TransposeSchema,
   PASSTHROUGH_MODE: z.boolean(),
   STAY_ON: z.boolean(),
   presets: z.record(presetKeysSchema, presetSchema),
