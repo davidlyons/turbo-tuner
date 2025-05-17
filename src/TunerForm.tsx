@@ -31,6 +31,7 @@ import {
 
 import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
 import { settingsToText } from '@/lib/settings-to-text'
+import { DownloadButton } from '@/components/DownloadButton'
 
 // https://react-hook-form.com/
 // https://zod.dev/
@@ -386,7 +387,9 @@ export function TunerForm() {
                 </>
               )}
 
-              <Button type="submit" className="w-full">
+              <DownloadButton text={settingsToText(form.getValues())} />
+
+              <Button type="submit" className="w-full" variant="secondary">
                 Console Log
               </Button>
             </form>

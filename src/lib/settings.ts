@@ -167,7 +167,7 @@ export const settings: z.infer<typeof formSchema> = {
         ],
       },
       Temperament: {
-        name: 'D.W.G',
+        name: 'D.W.G.',
         A4: 'default',
         Transpose: 0,
         offsets: {
