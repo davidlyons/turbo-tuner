@@ -40,6 +40,7 @@ export const formSchema = z.object({
   presets: z.record(presetKeysSchema, presetSchema),
 })
 
+// default values
 export const settings: z.infer<typeof formSchema> = {
   A4Default: 440.0,
   Transpose: 0,

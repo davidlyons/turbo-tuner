@@ -29,7 +29,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import { presetKeysSchema, formSchema, settings } from './settings'
+import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
+import { settingsToText } from '@/lib/settings-to-text'
 
 // https://react-hook-form.com/
 // https://zod.dev/
@@ -54,6 +55,8 @@ export function TunerForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    const text = settingsToText(values)
+    console.log(text)
   }
 
   return (
