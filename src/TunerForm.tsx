@@ -9,6 +9,7 @@ import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 
 import {
   Form,
@@ -32,6 +33,7 @@ import {
 import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
 import { settingsToText } from '@/lib/settings-to-text'
 import { DownloadButton } from '@/components/DownloadButton'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 // https://react-hook-form.com/
 // https://zod.dev/
@@ -40,6 +42,9 @@ import { DownloadButton } from '@/components/DownloadButton'
 
 export function TunerForm() {
   const [activePreset, setActivePreset] = useState<z.infer<typeof presetKeysSchema>>('GUIT')
+
+  type TunerModel = 'mini' | 'fullsize'
+  const [activeModel, setActiveModel] = useState<TunerModel>('mini')
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,6 +74,24 @@ export function TunerForm() {
 
             {/* Global settings fields */}
             <div className="mb-8 space-y-8">
+              {/* Tuner Model RadioGroup */}
+              <FormItem className="gap-3">
+                <Label>Model</Label>
+                <RadioGroup
+                  value={activeModel}
+                  onValueChange={(value: TunerModel) => setActiveModel(value)}
+                >
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="mini" id="mini" />
+                    <Label htmlFor="mini">ST-300 Mini</Label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="fullsize" id="fullsize" />
+                    <Label htmlFor="fullsize">ST-300 Full Size</Label>
+                  </div>
+                </RadioGroup>
+              </FormItem>
+
               <FormField
                 control={form.control}
                 name="A4Default"
@@ -109,20 +132,6 @@ export function TunerForm() {
 
               <FormField
                 control={form.control}
-                name="PASSTHROUGH_MODE"
-                render={({ field }) => (
-                  <FormItem className="flex items-center gap-3">
-                    <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel>Passthrough Mode</FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="STAY_ON"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-3">
@@ -134,8 +143,34 @@ export function TunerForm() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="PASSTHROUGH_MODE"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={activeModel === 'mini'}
+                      />
+                    </FormControl>
+                    <FormLabel>Passthrough Mode</FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <img src="/ST300-mini.png" alt="Turbo Tuner ST300 Mini" className="my-11" />
+            <img
+              src={activeModel === 'fullsize' ? '/ST300fs.png' : '/ST300mini.png'}
+              alt={
+                activeModel === 'fullsize'
+                  ? 'Turbo Tuner ST300 Full Size'
+                  : 'Turbo Tuner ST300 Mini'
+              }
+              className="mx-auto my-11 max-h-96 object-contain"
+            />
           </div>
           <div className="col-span-1">
             <ToggleGroup
