@@ -45,8 +45,8 @@ STAY_ON: ${boolToNum(values.STAY_ON)}
 
 Mode: ${key}
 Name: ${ot.name}
-A4: ${ot.A4}
-Transpose: ${ot.Transpose === 0 ? 'default' : ot.Transpose}
+A4: ${ot.A4 === undefined ? 'default' : ot.A4}
+Transpose: ${ot.Transpose === undefined ? 'default' : ot.Transpose}
 
 `
     ot.strings.forEach((s, i) => {
@@ -67,8 +67,8 @@ Transpose: ${ot.Transpose === 0 ? 'default' : ot.Transpose}
 
 Mode: ${key}
 Name: ${temp.name}
-A4: ${temp.A4}
-Transpose: ${temp.Transpose === 0 ? 'default' : temp.Transpose}
+A4: ${temp.A4 === undefined ? 'default' : temp.A4}
+Transpose: ${temp.Transpose === undefined ? 'default' : temp.Transpose}
 
 `
     Object.entries(temp.offsets).forEach(([note, offset]) => {

@@ -3,14 +3,14 @@ import { z } from 'zod'
 export const presetKeysSchema = z.enum(['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'])
 const notesKeysSchema = z.enum(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
 
-const TransposeSchema = z.number().min(-9, { message: 'Too low' }).max(9, { message: 'Too high' })
+const TransposeSchema = z.number().min(-9).max(9)
 const A4Schema = z.number().min(300).max(599.9)
 const offsetSchema = z.number().min(-50).max(50)
 
 const modeSettingsSchema = z.object({
   name: z.string(),
-  A4: z.union([z.literal('default'), z.string(), A4Schema]),
-  Transpose: TransposeSchema,
+  A4: A4Schema.optional(),
+  Transpose: TransposeSchema.optional(),
 })
 
 const presetSchema = z.object({
@@ -51,8 +51,8 @@ export const settings: z.infer<typeof formSchema> = {
       mode: 'OpenTuning',
       OpenTuning: {
         name: 'Guitar',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         strings: [
           { note: 'E4', offset: 0.0 },
           { note: 'B3', offset: 0.0 },
@@ -64,8 +64,8 @@ export const settings: z.infer<typeof formSchema> = {
       },
       Temperament: {
         name: 'JUST INTONATION',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         offsets: {
           C: 15.6,
           'C#': -13.7,
@@ -86,8 +86,8 @@ export const settings: z.infer<typeof formSchema> = {
       mode: 'OpenTuning',
       OpenTuning: {
         name: 'BASS-5',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         strings: [
           { note: 'G2', offset: 0.0 },
           { note: 'D2', offset: 0.0 },
@@ -98,8 +98,8 @@ export const settings: z.infer<typeof formSchema> = {
       },
       Temperament: {
         name: 'EQUAL',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         offsets: {
           C: 0.0,
           'C#': 0.0,
@@ -120,8 +120,8 @@ export const settings: z.infer<typeof formSchema> = {
       mode: 'OpenTuning',
       OpenTuning: {
         name: 'CST1',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         strings: [
           { note: 'E4', offset: 0.0 },
           { note: 'B3', offset: 0.0 },
@@ -133,8 +133,8 @@ export const settings: z.infer<typeof formSchema> = {
       },
       Temperament: {
         name: 'Thidell',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         offsets: {
           C: 2.0,
           'C#': -4.0,
@@ -155,8 +155,8 @@ export const settings: z.infer<typeof formSchema> = {
       mode: 'OpenTuning',
       OpenTuning: {
         name: 'Drop D',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         strings: [
           { note: 'E4', offset: 0.0 },
           { note: 'B3', offset: 0.0 },
@@ -168,8 +168,8 @@ export const settings: z.infer<typeof formSchema> = {
       },
       Temperament: {
         name: 'D.W.G.',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         offsets: {
           C: 5.9,
           'C#': 1.4,
@@ -190,8 +190,8 @@ export const settings: z.infer<typeof formSchema> = {
       mode: 'OpenTuning',
       OpenTuning: {
         name: 'BASS-6',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         strings: [
           { note: 'C3', offset: 0.0 },
           { note: 'G2', offset: 0.0 },
@@ -203,8 +203,8 @@ export const settings: z.infer<typeof formSchema> = {
       },
       Temperament: {
         name: 'MeanBlu',
-        A4: 'default',
-        Transpose: 0,
+        A4: undefined,
+        Transpose: undefined,
         offsets: {
           C: 0.0,
           'C#': 0.0,

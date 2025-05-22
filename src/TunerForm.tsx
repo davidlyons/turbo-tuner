@@ -33,7 +33,9 @@ import {
 import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
 import { settingsToText } from '@/lib/settings-to-text'
 import { DownloadButton } from '@/components/DownloadButton'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+// import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
+import { NumberInput } from './components/NumberInput'
 
 // https://react-hook-form.com/
 // https://zod.dev/
@@ -54,7 +56,7 @@ export function TunerForm() {
   })
 
   // https://react-hook-form.com/docs/useform/watch
-  form.watch()
+  // form.watch()
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -75,21 +77,22 @@ export function TunerForm() {
             {/* Global settings fields */}
             <div className="mb-8 space-y-8">
               {/* Tuner Model RadioGroup */}
-              <FormItem className="gap-3">
+              <FormItem>
                 <Label>Model</Label>
-                <RadioGroup
+                <Select
                   value={activeModel}
                   onValueChange={(value: TunerModel) => setActiveModel(value)}
                 >
-                  <div className="flex items-center gap-3">
-                    <RadioGroupItem value="mini" id="mini" />
-                    <Label htmlFor="mini">ST-300 Mini</Label>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <RadioGroupItem value="fullsize" id="fullsize" />
-                    <Label htmlFor="fullsize">ST-300 Full Size</Label>
-                  </div>
-                </RadioGroup>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a mode" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="mini">ST-300 Mini</SelectItem>
+                    <SelectItem value="fullsize">ST-300 Full Size</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormItem>
 
               <FormField
@@ -99,11 +102,13 @@ export function TunerForm() {
                   <FormItem>
                     <FormLabel>A4 Default</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
+                      <NumberInput
                         placeholder="A4 Default (Hz)"
                         value={field.value ?? ''}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        decimalScale={4}
+                        min={300}
+                        max={599}
                       />
                     </FormControl>
                     <FormMessage />
@@ -118,11 +123,12 @@ export function TunerForm() {
                   <FormItem>
                     <FormLabel>Transpose</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
+                      <NumberInput
                         placeholder="0"
                         value={field.value ?? ''}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        min={-9}
+                        max={9}
                       />
                     </FormControl>
                     <FormMessage />
@@ -251,14 +257,13 @@ export function TunerForm() {
                       <FormItem>
                         <FormLabel>A4</FormLabel>
                         <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="default or frequency"
-                            value={field.value === 'default' ? '' : (field.value ?? '')}
-                            onChange={(e) => {
-                              const val = e.target.value
-                              field.onChange(val === '' ? 'default' : Number(val))
-                            }}
+                          <NumberInput
+                            placeholder="Frequency (Hz)"
+                            value={field.value}
+                            onValueChange={(value) => field.onChange(value)}
+                            decimalScale={4}
+                            min={300}
+                            max={599}
                           />
                         </FormControl>
                         <FormMessage />
@@ -274,11 +279,12 @@ export function TunerForm() {
                       <FormItem>
                         <FormLabel>Transpose</FormLabel>
                         <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            value={field.value ?? ''}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                          <NumberInput
+                            placeholder="default"
+                            value={field.value}
+                            onValueChange={(value) => field.onChange(value)}
+                            min={-9}
+                            max={9}
                           />
                         </FormControl>
                         <FormMessage />
@@ -308,15 +314,17 @@ export function TunerForm() {
                                     field.onChange(newArr)
                                   }}
                                 />
-                                <Input
-                                  type="number"
+                                <NumberInput
                                   placeholder="Offset"
                                   value={stringObj.offset}
-                                  onChange={(e) => {
+                                  onValueChange={(value) => {
                                     const newArr = [...field.value]
-                                    newArr[idx] = { ...newArr[idx], offset: Number(e.target.value) }
+                                    newArr[idx] = { ...newArr[idx], offset: Number(value) }
                                     field.onChange(newArr)
                                   }}
+                                  decimalScale={1}
+                                  min={-50}
+                                  max={50}
                                 />
                               </div>
                             ))}
@@ -354,14 +362,13 @@ export function TunerForm() {
                       <FormItem>
                         <FormLabel>A4</FormLabel>
                         <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="default or frequency"
-                            value={field.value === 'default' ? '' : (field.value ?? '')}
-                            onChange={(e) => {
-                              const val = e.target.value
-                              field.onChange(val === '' ? 'default' : Number(val))
-                            }}
+                          <NumberInput
+                            placeholder="Frequency (Hz)"
+                            value={field.value}
+                            onValueChange={(value) => field.onChange(value)}
+                            decimalScale={4}
+                            min={300}
+                            max={599}
                           />
                         </FormControl>
                         <FormMessage />
@@ -377,11 +384,12 @@ export function TunerForm() {
                       <FormItem>
                         <FormLabel>Transpose</FormLabel>
                         <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            value={field.value ?? ''}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                          <NumberInput
+                            placeholder="default"
+                            value={field.value}
+                            onValueChange={(value) => field.onChange(value)}
+                            min={-9}
+                            max={9}
                           />
                         </FormControl>
                         <FormMessage />
@@ -402,15 +410,18 @@ export function TunerForm() {
                             Object.entries(field.value).map(([note, offset]) => (
                               <div key={note} className="flex items-center gap-2">
                                 <span className="w-8 shrink-0">{note}</span>
-                                <Input
-                                  type="number"
+                                <NumberInput
+                                  placeholder="Offset"
                                   value={offset}
-                                  onChange={(e) => {
+                                  onValueChange={(value) => {
                                     field.onChange({
                                       ...field.value,
-                                      [note]: Number(e.target.value),
+                                      [note]: Number(value),
                                     })
                                   }}
+                                  decimalScale={1}
+                                  min={-50}
+                                  max={50}
                                 />
                               </div>
                             ))}
