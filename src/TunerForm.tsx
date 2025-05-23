@@ -32,8 +32,6 @@ import {
 
 import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
 import { settingsToText } from '@/lib/settings-to-text'
-import { DownloadButton } from '@/components/DownloadButton'
-// import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 import { NumberInput } from './components/NumberInput'
 
@@ -55,16 +53,25 @@ export function TunerForm() {
     defaultValues: settings,
   })
 
-  // https://react-hook-form.com/docs/useform/watch
-  // form.watch()
-
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+
+    // console.log(values)
+    // const text = settingsToText(values)
+    // console.log(text)
+
     const text = settingsToText(values)
-    console.log(text)
+    const blob = new Blob([text], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'turbo-tuner-settings-web.txt'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   return (
@@ -74,9 +81,7 @@ export function TunerForm() {
           <div className="col-span-1">
             <h1 className="mb-9 text-3xl">Turbo Tuner Settings</h1>
 
-            {/* Global settings fields */}
             <div className="mb-8 space-y-8">
-              {/* Tuner Model RadioGroup */}
               <FormItem>
                 <Label>Model</Label>
                 <Select
@@ -95,6 +100,7 @@ export function TunerForm() {
                 </Select>
               </FormItem>
 
+              {/* Global settings fields */}
               <FormField
                 control={form.control}
                 name="A4Default"
@@ -168,6 +174,7 @@ export function TunerForm() {
                 )}
               />
             </div>
+
             <img
               src={activeModel === 'fullsize' ? '/ST300fs.png' : '/ST300mini.png'}
               alt={
@@ -433,10 +440,8 @@ export function TunerForm() {
                 </>
               )}
 
-              <DownloadButton text={settingsToText(form.getValues())} />
-
-              <Button type="submit" className="w-full" variant="secondary">
-                Console Log
+              <Button type="submit" className="w-full">
+                Download
               </Button>
             </form>
           </div>
