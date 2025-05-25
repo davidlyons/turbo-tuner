@@ -81,7 +81,7 @@ export const OpenTuningFields = ({
                   const newCount = Number(val)
                   let newArr = [...field.value]
                   if (newCount > newArr.length) {
-                    // Add new strings, each 7 semitones below the previous
+                    // Add new strings, each 5 semitones below the previous
                     for (let i = newArr.length; i < newCount; i++) {
                       const prevNote = newArr[i - 1]?.note
                       newArr.push({
