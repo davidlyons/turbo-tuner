@@ -9,9 +9,16 @@ import {
   // FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 import { Input } from '@/components/ui/input'
 import { NumberInput } from '@/components/NumberInput'
@@ -66,7 +73,41 @@ export const OpenTuningFields = ({
         key={`presets.${activePreset}.OpenTuning.strings`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Strings</FormLabel>
+            {/* Dropdown to select number of strings */}
+            <div className="mb-2">
+              <Select
+                value={String(field.value.length)}
+                onValueChange={(val) => {
+                  const newCount = Number(val)
+                  let newArr = [...field.value]
+                  if (newCount > newArr.length) {
+                    // Add new strings, each 7 semitones below the previous
+                    for (let i = newArr.length; i < newCount; i++) {
+                      const prevNote = newArr[i - 1]?.note
+                      newArr.push({
+                        note: shiftNote(prevNote, -5),
+                        offset: 0.0,
+                      })
+                    }
+                  } else if (newCount < newArr.length) {
+                    // Remove strings from the end
+                    newArr = newArr.slice(0, newCount)
+                  }
+                  field.onChange(newArr)
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Strings" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[4, 5, 6, 7, 8, 9].map((num) => (
+                    <SelectItem key={num} value={String(num)}>
+                      {num} Strings
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             {/* shift all strings up or down one half step */}
             <div className="ml-10 flex gap-2 align-middle">
