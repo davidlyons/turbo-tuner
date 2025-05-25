@@ -9,11 +9,11 @@ Tools:
 
 - Vite
 - React
-- shadcn/ui
-- Tailwind
 - TypeScript
-- React Hook Form
-- Zod
+- [shadcn/ui](https://ui.shadcn.com)
+- [Tailwind](https://ui.shadcn.com/)
+- [React Hook Form](https://react-hook-form.com)
+- [Zod](https://zod.dev)
 
 References:
 

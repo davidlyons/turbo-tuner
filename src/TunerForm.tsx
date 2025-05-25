@@ -39,11 +39,6 @@ import { NumberInput } from '@/components/NumberInput'
 import { TemperamentFields } from '@/components/TemperamentFields'
 import { OpenTuningFields } from '@/components/OpenTuningFields'
 
-// https://react-hook-form.com/
-// https://zod.dev/
-
-//
-
 export function TunerForm() {
   const [activePreset, setActivePreset] = useState<z.infer<typeof presetKeysSchema>>('GUIT')
 
