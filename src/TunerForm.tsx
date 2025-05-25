@@ -178,7 +178,7 @@ export function TunerForm() {
               </div>
 
               <img
-                src={activeModel === 'fullsize' ? '/ST300fs.png' : '/ST300mini.png'}
+                src={activeModel === 'fullsize' ? 'ST300fs.png' : 'ST300mini.png'}
                 alt={
                   activeModel === 'fullsize'
                     ? 'Turbo Tuner ST300 Full Size'
