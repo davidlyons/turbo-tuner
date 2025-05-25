@@ -1,7 +1,9 @@
 import { z } from 'zod'
 
 export const presetKeysSchema = z.enum(['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'])
+
 const notesKeysSchema = z.enum(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
+export const noteRegex = /^(?![EB]#)([A-G]#?)(\d)$/
 
 const TransposeSchema = z.number().min(-9).max(9)
 const A4Schema = z.number().min(300).max(599.9)
@@ -19,7 +21,7 @@ const presetSchema = z.object({
     z.object({
       strings: z.array(
         z.object({
-          note: z.string(),
+          note: z.string().regex(noteRegex),
           offset: offsetSchema,
         })
       ),

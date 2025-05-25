@@ -134,6 +134,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             onClick={handleIncrement}
             disabled={value === max}
             type="button"
+            tabIndex={-1}
           >
             <ChevronUp size={15} />
           </Button>
@@ -145,6 +146,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             onClick={handleDecrement}
             disabled={value === min}
             type="button"
+            tabIndex={-1}
           >
             <ChevronDown size={15} />
           </Button>
