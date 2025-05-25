@@ -1,4 +1,4 @@
-import { TunerForm } from './TunerForm'
+import { TunerForm } from '@/TunerForm'
 
 function App() {
   return (
