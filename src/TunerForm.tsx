@@ -32,6 +32,7 @@ import {
 import { Input } from '@/components/ui/input'
 
 import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
+// import { textToSettings } from '@/lib/text-to-settings'
 import { settingsToText } from '@/lib/settings-to-text'
 
 import { NumberInput } from '@/components/NumberInput'
@@ -75,6 +76,20 @@ export function TunerForm() {
     URL.revokeObjectURL(url)
   }
 
+  // Handler for file input to import settings
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const text = await file.text()
+    const parsed = textToSettings(text)
+    if (parsed) {
+      // form.reset(parsed)
+      console.log(parsed)
+    } else {
+      alert('Failed to parse settings file.')
+    }
+  }
+
   return (
     <>
       <Form {...form}>
@@ -82,6 +97,14 @@ export function TunerForm() {
           <div className="grid-cols-3 gap-8 lg:grid">
             <div className="col-span-1">
               <h1 className="mb-9 text-3xl">Turbo Tuner Settings</h1>
+
+              {/* File input for importing settings */}
+              <div className="mb-4">
+                <Label htmlFor="settings-file" className="mb-1 block font-medium">
+                  Import Settings
+                </Label>
+                <Input id="settings-file" type="file" accept=".txt" onChange={handleFileChange} />
+              </div>
 
               <div className="mb-8 space-y-8">
                 <FormItem>
