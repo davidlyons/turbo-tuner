@@ -8,9 +8,6 @@ export function settingsToText(values: FormValues): string {
   // Helper for boolean to 0/1
   const boolToNum = (b: boolean) => (b ? 1 : 0)
 
-  // Helper for formatting numbers
-  const fmt = (n: number, digits = 1) => n.toFixed(digits)
-
   // Preset keys
   const presetKeys = Object.keys(values.presets) as PresetKeysType[]
 
@@ -19,7 +16,7 @@ export function settingsToText(values: FormValues): string {
 -----SETTINGS-----
 
 A4Default: ${Number(values.A4Default).toFixed(4)}
-Transpose: ${values.Transpose}
+Transpose: ${values.Transpose > 0 ? '+' : ''}${values.Transpose}
 
 `
 
@@ -46,11 +43,12 @@ STAY_ON: ${boolToNum(values.STAY_ON)}
 Mode: ${key}
 Name: ${ot.name}
 A4: ${ot.A4 === undefined ? 'default' : ot.A4}
-Transpose: ${ot.Transpose === undefined ? 'default' : ot.Transpose}
+Transpose: ${ot.Transpose === undefined ? 'default' : `${ot.Transpose > 0 ? '+' : ''}${ot.Transpose}`}
 
 `
     ot.strings.forEach((s, i) => {
-      txt += `${i + 1}:  ${s.note.padEnd(3)}   ${s.offset >= 0 ? '+' : ''}${fmt(s.offset, 1)}\n`
+      const offset = `${s.offset >= 0 ? '+' : ''}${s.offset.toFixed(1)}`
+      txt += `${i + 1}:  ${s.note.padEnd(3)}  ${offset.padStart(5)}\n`
     })
     txt += `
 --------end--------
@@ -68,11 +66,13 @@ Transpose: ${ot.Transpose === undefined ? 'default' : ot.Transpose}
 Mode: ${key}
 Name: ${temp.name}
 A4: ${temp.A4 === undefined ? 'default' : temp.A4}
-Transpose: ${temp.Transpose === undefined ? 'default' : temp.Transpose}
+Transpose: ${temp.Transpose === undefined ? 'default' : `${temp.Transpose > 0 ? '+' : ''}${temp.Transpose}`}
 
 `
     Object.entries(temp.offsets).forEach(([note, offset]) => {
-      txt += `${note}:   ${offset >= 0 ? '+' : ''}${fmt(offset, 1)}\n`
+      const noteStr = `${note}:`
+      const offsetStr = `${offset >= 0 ? '+' : ''}${offset.toFixed(1)}`
+      txt += `${noteStr.padEnd(3)}  ${offsetStr.padStart(5)}\n`
     })
     txt += `
 --------end--------

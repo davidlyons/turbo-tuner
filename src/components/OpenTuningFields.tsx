@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { formSchema, presetKeysSchema, noteRegex } from '@/lib/settings'
 
 import {
+  FormLabel,
   // FormDescription,
   FormField,
   FormItem,
@@ -73,6 +74,8 @@ export const OpenTuningFields = ({
         key={`presets.${activePreset}.OpenTuning.strings`}
         render={({ field }) => (
           <FormItem>
+            <FormLabel>Strings</FormLabel>
+
             {/* Dropdown to select number of strings */}
             <div className="mb-2">
               <Select
@@ -147,6 +150,7 @@ export const OpenTuningFields = ({
               </ButtonGroup>
             </div>
 
+            {/* strings */}
             <div className="space-y-2">
               {Array.isArray(field.value) &&
                 field.value.map((stringObj, index) => (

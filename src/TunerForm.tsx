@@ -114,7 +114,7 @@ export function TunerForm() {
                           placeholder="A4 Default (Hz)"
                           value={field.value ?? ''}
                           onValueChange={(value) => field.onChange(Number(value))}
-                          decimalScale={4}
+                          decimalScale={1}
                           min={300}
                           max={599}
                         />
@@ -264,10 +264,10 @@ export function TunerForm() {
                       <FormLabel>A4</FormLabel>
                       <FormControl>
                         <NumberInput
-                          placeholder="Frequency (Hz)"
+                          placeholder="default"
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
-                          decimalScale={4}
+                          decimalScale={1}
                           min={300}
                           max={599}
                         />
