@@ -7,9 +7,10 @@ import path from 'path'
 export default defineConfig({
   root: 'src/',
   publicDir: '../public/',
-  base: '/turbo-tuner/',
+  base: './',
   build: {
     outDir: '../dist',
+    emptyOutDir: true,
   },
   plugins: [react(), tailwindcss()],
   server: {
