@@ -47,14 +47,14 @@ export function playNote(frequency: number): { stop: () => void } {
   const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
   const osc = ctx.createOscillator()
   const gain = ctx.createGain()
-  const filter = ctx.createBiquadFilter()
   osc.type = 'triangle'
   osc.frequency.value = frequency
-  filter.type = 'lowpass'
-  filter.frequency.value = 1800
+
+  // Dynamic gain for low notes
+  const peakGain = frequency < 35 ? 4.0 : frequency < 100 ? 1.0 : frequency < 200 ? 0.7 : 0.5
   gain.gain.value = 0
-  osc.connect(filter)
-  filter.connect(gain)
+
+  osc.connect(gain)
   gain.connect(ctx.destination)
   osc.start()
 
@@ -67,8 +67,8 @@ export function playNote(frequency: number): { stop: () => void } {
     const now = ctx.currentTime
     gain.gain.cancelScheduledValues(now)
     gain.gain.setValueAtTime(0, now)
-    gain.gain.linearRampToValueAtTime(0.2, now + 0.01) // quick attack
-    gain.gain.linearRampToValueAtTime(0, now + 1.0) // decay over 1s
+    gain.gain.linearRampToValueAtTime(peakGain, now + 0.01)
+    gain.gain.linearRampToValueAtTime(0, now + 1.0)
   }
 
   // Start the repeating envelope
