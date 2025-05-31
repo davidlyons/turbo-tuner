@@ -19,7 +19,7 @@ export function textToSettings(text: string): settingsType {
   const settings: settingsType = JSON.parse(JSON.stringify(defaultSettings))
 
   // Regex to find section headers and ends
-  const sectionRegex = /-{8,}(SETTINGS|OpenTuning|Temperament)-{8,}|-{8,}end-{8,}/gi
+  const sectionRegex = /-{4,}(SETTINGS|OpenTuning|Temperament)-{4,}|-{8,}end-{8,}/gi
   const parts: { type: string; body: string }[] = []
   let match: RegExpExecArray | null
   let lastIndex = 0
