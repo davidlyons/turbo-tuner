@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 export const presetKeysSchema = z.enum(['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'])
 
+export type presetKeysType = z.infer<typeof presetKeysSchema>
+
 const notesKeysSchema = z.enum(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
 export const noteRegex = /^(?![EB]#)([A-G]#?)(\d)$/
 
@@ -42,8 +44,10 @@ export const formSchema = z.object({
   presets: z.record(presetKeysSchema, presetSchema),
 })
 
+export type settingsType = z.infer<typeof formSchema>
+
 // default values
-export const settings: z.infer<typeof formSchema> = {
+export const settings: settingsType = {
   A4Default: 440.0,
   Transpose: 0,
   PASSTHROUGH_MODE: false,

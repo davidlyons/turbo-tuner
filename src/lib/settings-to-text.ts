@@ -1,15 +1,11 @@
-import { z } from 'zod'
-import { formSchema, presetKeysSchema } from './settings'
+import { type settingsType, type presetKeysType } from './settings'
 
-type FormValues = z.infer<typeof formSchema>
-type PresetKeysType = z.infer<typeof presetKeysSchema>
-
-export function settingsToText(values: FormValues): string {
+export function settingsToText(values: settingsType): string {
   // Helper for boolean to 0/1
   const boolToNum = (b: boolean) => (b ? 1 : 0)
 
   // Preset keys
-  const presetKeys = Object.keys(values.presets) as PresetKeysType[]
+  const presetKeys = Object.keys(values.presets) as presetKeysType[]
 
   // Header
   let txt = `

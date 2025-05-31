@@ -2,8 +2,7 @@
 
 import { useFormContext } from 'react-hook-form'
 
-import { z } from 'zod'
-import { formSchema, presetKeysSchema } from '@/lib/settings'
+import { type settingsType, type presetKeysType } from '@/lib/settings'
 
 import {
   // FormDescription,
@@ -15,12 +14,8 @@ import {
 
 import { NumberInput } from '@/components/NumberInput'
 
-export const TemperamentFields = ({
-  activePreset,
-}: {
-  activePreset: z.infer<typeof presetKeysSchema>
-}) => {
-  const form = useFormContext<z.infer<typeof formSchema>>()
+export const TemperamentFields = ({ activePreset }: { activePreset: presetKeysType }) => {
+  const form = useFormContext<settingsType>()
 
   return (
     <>

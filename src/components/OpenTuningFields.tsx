@@ -2,8 +2,7 @@
 
 import { useFormContext } from 'react-hook-form'
 
-import { z } from 'zod'
-import { formSchema, presetKeysSchema, noteRegex } from '@/lib/settings'
+import { noteRegex, type settingsType, type presetKeysType } from '@/lib/settings'
 
 import {
   FormLabel,
@@ -58,12 +57,8 @@ function shiftNote(noteWithOctave: string, semitones: number) {
 
 type TuningString = { note: string; offset: number }
 
-export const OpenTuningFields = ({
-  activePreset,
-}: {
-  activePreset: z.infer<typeof presetKeysSchema>
-}) => {
-  const form = useFormContext<z.infer<typeof formSchema>>()
+export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysType }) => {
+  const form = useFormContext<settingsType>()
 
   return (
     <>
