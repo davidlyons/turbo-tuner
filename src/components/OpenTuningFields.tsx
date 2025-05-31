@@ -3,8 +3,7 @@
 import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { z } from 'zod'
-import { formSchema, presetKeysSchema, noteRegex } from '@/lib/settings'
+import { noteRegex, type settingsType, type presetKeysType } from '@/lib/settings'
 
 import {
   FormLabel,
@@ -34,12 +33,8 @@ import { shiftNote, noteToFrequency, playNote } from '@/lib/audio-utils'
 
 type TuningString = { note: string; offset: number }
 
-export const OpenTuningFields = ({
-  activePreset,
-}: {
-  activePreset: z.infer<typeof presetKeysSchema>
-}) => {
-  const form = useFormContext<z.infer<typeof formSchema>>()
+export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysType }) => {
+  const form = useFormContext<settingsType>()
 
   // Get OpenTuning's A4 value, or fallback to A4Default, or 440
   const a4Value =

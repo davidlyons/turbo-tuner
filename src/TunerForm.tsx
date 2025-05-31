@@ -5,7 +5,6 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
@@ -31,7 +30,8 @@ import {
 
 import { Input } from '@/components/ui/input'
 
-import { presetKeysSchema, formSchema, settings } from '@/lib/settings'
+import { formSchema, settings, type settingsType, type presetKeysType } from '@/lib/settings'
+import { textToSettings } from '@/lib/text-to-settings'
 import { settingsToText } from '@/lib/settings-to-text'
 
 import { NumberInput } from '@/components/NumberInput'
@@ -40,13 +40,13 @@ import { TemperamentFields } from '@/components/TemperamentFields'
 import { OpenTuningFields } from '@/components/OpenTuningFields'
 
 export function TunerForm() {
-  const [activePreset, setActivePreset] = useState<z.infer<typeof presetKeysSchema>>('GUIT')
+  const [activePreset, setActivePreset] = useState<presetKeysType>('GUIT')
 
   type TunerModel = 'mini' | 'fullsize'
   const [activeModel, setActiveModel] = useState<TunerModel>('mini')
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<settingsType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: settings,
@@ -55,24 +55,31 @@ export function TunerForm() {
   const presetMode = form.watch(`presets.${activePreset}.mode`)
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    // console.log(values)
-    // const text = settingsToText(values)
-    // console.log(text)
-
+  function onSubmit(values: settingsType) {
+    // Do something with the form values. This will be type-safe and validated.
     const text = settingsToText(values)
     const blob = new Blob([text], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'turbo-tuner-settings-web.txt'
+    a.download = 'turbo-tuner-settings.txt'
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+  }
+
+  // Handler for file input to import settings
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const text = await file.text()
+    const parsed = textToSettings(text)
+    if (parsed) {
+      form.reset(parsed)
+    } else {
+      alert('Failed to parse settings file.')
+    }
   }
 
   return (
@@ -84,6 +91,11 @@ export function TunerForm() {
               <h1 className="mb-9 text-3xl">Turbo Tuner Settings</h1>
 
               <div className="mb-8 space-y-8">
+                <FormItem>
+                  <Label htmlFor="settings-file">Import</Label>
+                  <Input id="settings-file" type="file" accept=".txt" onChange={handleFileChange} />
+                </FormItem>
+
                 <FormItem>
                   <Label>Model</Label>
                   <Select
@@ -195,7 +207,7 @@ export function TunerForm() {
                 size="lg"
                 // https://www.radix-ui.com/primitives/docs/components/toggle-group#ensuring-there-is-always-a-value
                 value={activePreset}
-                onValueChange={(value: z.infer<typeof presetKeysSchema>) => {
+                onValueChange={(value: presetKeysType) => {
                   if (value) setActivePreset(value)
                 }}
               >
