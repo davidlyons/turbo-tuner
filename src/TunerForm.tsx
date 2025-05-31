@@ -86,7 +86,7 @@ export function TunerForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid-cols-3 gap-8 lg:grid">
+          <div className="grid-cols-2 gap-8 md:grid">
             <div className="col-span-1">
               <h1 className="mb-9 text-3xl">Turbo Tuner Settings</h1>
 
