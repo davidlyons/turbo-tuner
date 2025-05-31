@@ -171,7 +171,7 @@ export function TunerForm() {
                       </FormControl>
                       <FormLabel>Stay On</FormLabel>
                       <Tooltip>
-                        <TooltipTrigger className="ml-auto opacity-50">
+                        <TooltipTrigger className="opacity-40">
                           <CircleHelp />
                         </TooltipTrigger>
                         <TooltipContent>
@@ -200,7 +200,7 @@ export function TunerForm() {
                       </FormControl>
                       <FormLabel>Passthrough Mode</FormLabel>
                       <Tooltip>
-                        <TooltipTrigger className="ml-auto opacity-50">
+                        <TooltipTrigger className="opacity-40">
                           <CircleHelp />
                         </TooltipTrigger>
                         <TooltipContent>

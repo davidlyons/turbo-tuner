@@ -25,7 +25,15 @@ function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root
 }
 
 function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" type="button" {...props} />
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      type="button"
+      onClick={(event) => event.preventDefault()}
+      onPointerDown={(event) => event.preventDefault()}
+      {...props}
+    />
+  )
 }
 
 function TooltipContent({
@@ -47,6 +55,7 @@ function TooltipContent({
           origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance`,
           className
         )}
+        onPointerDownOutside={(event) => event.preventDefault()}
         {...props}
       >
         {children}
