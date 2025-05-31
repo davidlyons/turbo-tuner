@@ -88,22 +88,24 @@ export function TunerForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid-cols-2 gap-8 md:grid">
             <div className="col-span-1">
-              <h1 className="mb-9 text-3xl">Turbo Tuner Settings</h1>
+              <h1 className="mb-8 text-center text-3xl md:text-start md:text-4xl">
+                Turbo Tuner Editor
+              </h1>
 
               <div className="mb-8 space-y-8">
                 <FormItem>
-                  <Label htmlFor="settings-file">Import</Label>
+                  <Label htmlFor="settings-file">Import settings</Label>
                   <Input id="settings-file" type="file" accept=".txt" onChange={handleFileChange} />
                 </FormItem>
 
                 <FormItem>
-                  <Label>Model</Label>
+                  <Label htmlFor="model">Model</Label>
                   <Select
                     value={activeModel}
                     onValueChange={(value: TunerModel) => setActiveModel(value)}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" id="model">
                         <SelectValue placeholder="Select a mode" />
                       </SelectTrigger>
                     </FormControl>
@@ -120,7 +122,7 @@ export function TunerForm() {
                   name="A4Default"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>A4 Default</FormLabel>
+                      <FormLabel>A4 Default (Hz)</FormLabel>
                       <FormControl>
                         <NumberInput
                           placeholder="A4 Default (Hz)"
@@ -141,7 +143,7 @@ export function TunerForm() {
                   name="Transpose"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Transpose</FormLabel>
+                      <FormLabel>Transpose Default (semitones)</FormLabel>
                       <FormControl>
                         <NumberInput
                           placeholder="0"
