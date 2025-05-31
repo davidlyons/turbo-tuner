@@ -1,18 +1,28 @@
 import { TunerForm } from '@/TunerForm'
+import { BookText } from 'lucide-react'
+import GitHub from './github.svg?react'
 
 function App() {
   return (
     <>
-      <div className="py-19">
+      <div className="py-12 md:py-19">
         <div className="mx-auto px-4 md:max-w-4xl">
           <TunerForm />
 
-          <div className="text-center">
+          <div className="right-4 bottom-4 text-center min-[1170px]:fixed">
+            <a
+              href="https://www.turbo-tuner.com/usb"
+              className="inline-block p-4 opacity-50 transition-opacity hover:opacity-100"
+              aria-label="USB Operation Doc"
+            >
+              <BookText className="size-6" />
+            </a>
             <a
               href="https://github.com/davidlyons/turbo-tuner"
-              className="right-4 bottom-4 inline-block p-4 opacity-50 transition-opacity hover:opacity-100 lg:absolute"
+              className="inline-block p-4 opacity-50 transition-opacity hover:opacity-100"
+              aria-label="GitHub Repo"
             >
-              <img className="inline size-6" src="https://cdn.simpleicons.org/github/white" />
+              <GitHub className="size-6" />
             </a>
           </div>
         </div>
