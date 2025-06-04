@@ -46,7 +46,6 @@ export const formSchema = z.object({
 
 export type settingsType = z.infer<typeof formSchema>
 
-// default values
 export const settings: settingsType = {
   A4Default: 440.0,
   Transpose: 0,
@@ -56,7 +55,7 @@ export const settings: settingsType = {
     GUIT: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'Guitar',
+        name: 'Standard',
         A4: undefined,
         Transpose: undefined,
         strings: [
@@ -66,6 +65,7 @@ export const settings: settingsType = {
           { note: 'D3', offset: 0.0 },
           { note: 'A2', offset: 0.0 },
           { note: 'E2', offset: 0.0 },
+          { note: 'B1', offset: 0.0 },
         ],
       },
       Temperament: {
@@ -125,7 +125,7 @@ export const settings: settingsType = {
     CST1: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'CST1',
+        name: 'Drop D',
         A4: undefined,
         Transpose: undefined,
         strings: [
@@ -134,7 +134,7 @@ export const settings: settingsType = {
           { note: 'G3', offset: 0.0 },
           { note: 'D3', offset: 0.0 },
           { note: 'A2', offset: 0.0 },
-          { note: 'E2', offset: 0.0 },
+          { note: 'D2', offset: 0.0 },
         ],
       },
       Temperament: {
@@ -160,16 +160,17 @@ export const settings: settingsType = {
     CST2: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'Drop D',
+        name: 'Drop G',
         A4: undefined,
         Transpose: undefined,
         strings: [
-          { note: 'E4', offset: 0.0 },
-          { note: 'B3', offset: 0.0 },
-          { note: 'G3', offset: 0.0 },
-          { note: 'D3', offset: 0.0 },
-          { note: 'A2', offset: 0.0 },
+          { note: 'D4', offset: 0.0 },
+          { note: 'A3', offset: 0.0 },
+          { note: 'F3', offset: 0.0 },
+          { note: 'C3', offset: 0.0 },
+          { note: 'G2', offset: 0.0 },
           { note: 'D2', offset: 0.0 },
+          { note: 'G1', offset: 0.0 },
         ],
       },
       Temperament: {
@@ -195,16 +196,17 @@ export const settings: settingsType = {
     CST3: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'BASS-6',
+        name: 'Drop F/C',
         A4: undefined,
         Transpose: undefined,
         strings: [
+          { note: 'D4', offset: 0.0 },
+          { note: 'A3', offset: 0.0 },
+          { note: 'F3', offset: 0.0 },
           { note: 'C3', offset: 0.0 },
           { note: 'G2', offset: 0.0 },
-          { note: 'D2', offset: 0.0 },
-          { note: 'A1', offset: 0.0 },
-          { note: 'E1', offset: 0.0 },
-          { note: 'B0', offset: 0.0 },
+          { note: 'C2', offset: 0.0 },
+          { note: 'F1', offset: 0.0 },
         ],
       },
       Temperament: {
