@@ -3,19 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* @theme {
+@theme {
+  --font-sans: 'Inter Variable', sans-serif;
 }
 
-@utility container {
+/* @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
 } */
-
-@layer base {
-  svg {
-    display: inline;
-  }
-}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -130,5 +125,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  svg {
+    display: inline;
   }
 }
