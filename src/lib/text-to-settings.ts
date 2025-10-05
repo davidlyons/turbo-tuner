@@ -39,7 +39,7 @@ export function textToSettings(text: string): settingsType {
     // Split into lines and process each key/value
     const lines = settingsPart.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     for (const line of lines) {
       if (line.startsWith('//')) continue // skip comments
@@ -74,7 +74,7 @@ export function textToSettings(text: string): settingsType {
   for (const part of parts.filter((p) => p.type === 'OpenTuning')) {
     const lines = part.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     let mode = '',
       name = '',
@@ -97,9 +97,9 @@ export function textToSettings(text: string): settingsType {
         if (val === 'default') Transpose = undefined // use global default if "default"
       } else if (/^\d+:/.test(line)) {
         // Parse string lines, e.g. 1:  E4    +0.0
-        const m = line.match(/^\d+:\s*([A-G]#?\d)\s*([+-]?\d+(\.\d+)?)/)
-        if (m) {
-          strings.push({ note: m[1], offset: Number(m[2]) })
+        const match = line.match(/^\d+:\s*([A-G]#?\d)\s*([+-]?\d+(\.\d+)?)/)
+        if (match) {
+          strings.push({ note: match[1], offset: Number(match[2]) })
         }
       }
     }
@@ -118,7 +118,7 @@ export function textToSettings(text: string): settingsType {
   for (const part of parts.filter((p) => p.type === 'Temperament')) {
     const lines = part.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     let mode = '',
       name = '',
@@ -141,9 +141,9 @@ export function textToSettings(text: string): settingsType {
         if (val === 'default') Transpose = undefined
       } else {
         // Parse note offsets, e.g. C#: +0.0
-        const m = line.match(/^([A-G]#?):\s*([+-]?\d+(\.\d+)?)/)
-        if (m && noteNames.includes(m[1] as any)) {
-          offsets[m[1]] = Number(m[2])
+        const match = line.match(/^([A-G]#?):\s*([+-]?\d+(\.\d+)?)/)
+        if (match && noteNames.includes(match[1] as any)) {
+          offsets[match[1]] = Number(match[2])
         }
       }
     }
@@ -153,7 +153,8 @@ export function textToSettings(text: string): settingsType {
         name,
         A4,
         Transpose,
-        offsets: Object.fromEntries(noteNames.map((n) => [n, offsets[n] ?? 0])),
+        // @ts-expect-error offsets
+        offsets: Object.fromEntries(noteNames.map((note) => [note, offsets[note] ?? 0])),
       }
     }
   }
