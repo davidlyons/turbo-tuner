@@ -267,8 +267,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                         <div className="flex flex-col">
                           <Button
                             aria-label="Shift up"
-                            className="border-input h-4.5 rounded-l-none rounded-br-none border-b-[0.5px] border-l-0 px-2
-                              focus-visible:relative"
+                            className="border-input h-4.5 rounded-l-none rounded-br-none
+                              border-b-[0.5px] border-l-0 px-2 focus-visible:relative"
                             variant="outline"
                             type="button"
                             tabIndex={-1}
@@ -286,8 +286,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                           </Button>
                           <Button
                             aria-label="Shift down"
-                            className="border-input h-4.5 rounded-l-none rounded-tr-none border-t-[0.5px] border-l-0 px-2
-                              focus-visible:relative"
+                            className="border-input h-4.5 rounded-l-none rounded-tr-none
+                              border-t-[0.5px] border-l-0 px-2 focus-visible:relative"
                             variant="outline"
                             type="button"
                             tabIndex={-1}

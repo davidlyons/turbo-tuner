@@ -39,6 +39,9 @@ import { NumberInput } from '@/components/NumberInput'
 import { TemperamentFields } from '@/components/TemperamentFields'
 import { OpenTuningFields } from '@/components/OpenTuningFields'
 
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { CircleHelp } from 'lucide-react'
+
 export function TunerForm() {
   const [activePreset, setActivePreset] = useState<presetKeysType>('GUIT')
 
@@ -78,7 +81,7 @@ export function TunerForm() {
     if (parsed) {
       form.reset(parsed)
     } else {
-      alert('Failed to parse settings file.')
+      console.log('Failed to parse settings file.')
     }
   }
 
@@ -167,6 +170,17 @@ export function TunerForm() {
                         <Switch checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
                       <FormLabel>Stay On</FormLabel>
+                      <Tooltip>
+                        <TooltipTrigger className="opacity-40">
+                          <CircleHelp />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            If this is set to 1, the tuner will power up when external power is
+                            first applied, such as when powering up your pedal board.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -185,6 +199,29 @@ export function TunerForm() {
                         />
                       </FormControl>
                       <FormLabel>Passthrough Mode</FormLabel>
+                      <Tooltip>
+                        <TooltipTrigger className="opacity-40">
+                          <CircleHelp />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="space-y-3">
+                            <p>
+                              Only applies to the ST-300 full size when it is set to passthrough
+                              mode via the internal DIP switches.
+                            </p>
+
+                            <p>
+                              If set to 0, the input signal is always passed through to the output.
+                              The footswitch turns the tuner on and off.
+                            </p>
+
+                            <p>
+                              If set to 1, the tuner is always on. The footswitch mutes the output.
+                              Not recommended when powering the tuner from a battery.
+                            </p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
                       <FormMessage />
                     </FormItem>
                   )}

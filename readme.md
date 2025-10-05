@@ -7,15 +7,15 @@
 
 Tools:
 
-- Vite
-- React
-- TypeScript
+- [Vite](https://vite.dev)
+- [React](https://react.dev)
+- [TypeScript](https://www.typescriptlang.org)
 - [shadcn/ui](https://ui.shadcn.com)
-- [Tailwind](https://ui.shadcn.com/)
+- [Tailwind](https://tailwindcss.com)
 - [React Hook Form](https://react-hook-form.com)
 - [Zod](https://zod.dev)
 
-References:
+Tuning UI References:
 
 - [Guitar Pro 8 Tuning](https://support.guitar-pro.com/hc/en-us/articles/360000034505-GP8-Select-or-set-up-the-tuning-of-your-choice)
 - [Stringjoy Tension Calculator](https://tension.stringjoy.com)

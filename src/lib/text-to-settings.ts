@@ -19,7 +19,7 @@ export function textToSettings(text: string): settingsType {
   const settings: settingsType = JSON.parse(JSON.stringify(defaultSettings))
 
   // Regex to find section headers and ends
-  const sectionRegex = /-{8,}(SETTINGS|OpenTuning|Temperament)-{8,}|-{8,}end-{8,}/gi
+  const sectionRegex = /-{4,}(SETTINGS|OpenTuning|Temperament)-{4,}|-{8,}end-{8,}/gi
   const parts: { type: string; body: string }[] = []
   let match: RegExpExecArray | null
   let lastIndex = 0
@@ -39,7 +39,7 @@ export function textToSettings(text: string): settingsType {
     // Split into lines and process each key/value
     const lines = settingsPart.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     for (const line of lines) {
       if (line.startsWith('//')) continue // skip comments
@@ -74,12 +74,12 @@ export function textToSettings(text: string): settingsType {
   for (const part of parts.filter((p) => p.type === 'OpenTuning')) {
     const lines = part.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     let mode = '',
       name = '',
-      a4: number | undefined = undefined,
-      transpose: number | undefined = undefined
+      A4: number | undefined = undefined,
+      Transpose: number | undefined = undefined
     const strings: { note: string; offset: number }[] = []
     for (const line of lines) {
       if (line.startsWith('//')) continue
@@ -89,17 +89,17 @@ export function textToSettings(text: string): settingsType {
         name = line.split(':')[1].trim()
       } else if (line.startsWith('A4:')) {
         const val = line.split(':')[1].trim()
-        a4 = parseNumberOrDefault(val, settings.A4Default)
-        if (val === 'default') a4 = undefined // use global default if "default"
+        A4 = parseNumberOrDefault(val, settings.A4Default)
+        if (val === 'default') A4 = undefined // use global default if "default"
       } else if (line.startsWith('Transpose:')) {
         const val = line.split(':')[1].trim()
-        transpose = parseNumberOrDefault(val, settings.Transpose)
-        if (val === 'default') transpose = undefined // use global default if "default"
+        Transpose = parseNumberOrDefault(val, settings.Transpose)
+        if (val === 'default') Transpose = undefined // use global default if "default"
       } else if (/^\d+:/.test(line)) {
         // Parse string lines, e.g. 1:  E4    +0.0
-        const m = line.match(/^\d+:\s*([A-G]#?\d)\s*([+-]?\d+(\.\d+)?)/)
-        if (m) {
-          strings.push({ note: m[1], offset: Number(m[2]) })
+        const match = line.match(/^\d+:\s*([A-G]#?\d)\s*([+-]?\d+(\.\d+)?)/)
+        if (match) {
+          strings.push({ note: match[1], offset: Number(match[2]) })
         }
       }
     }
@@ -107,8 +107,8 @@ export function textToSettings(text: string): settingsType {
     if (presetKeys.includes(mode as any)) {
       settings.presets[mode as (typeof presetKeys)[number]]!.OpenTuning = {
         name,
-        A4: a4,
-        Transpose: transpose,
+        A4,
+        Transpose,
         strings,
       }
     }
@@ -118,12 +118,12 @@ export function textToSettings(text: string): settingsType {
   for (const part of parts.filter((p) => p.type === 'Temperament')) {
     const lines = part.body
       .split('\n')
-      .map((l) => l.trim())
+      .map((line) => line.trim())
       .filter(Boolean)
     let mode = '',
       name = '',
-      a4: number | undefined = undefined,
-      transpose: number | undefined = undefined
+      A4: number | undefined = undefined,
+      Transpose: number | undefined = undefined
     const offsets: Record<string, number> = {}
     for (const line of lines) {
       if (line.startsWith('//')) continue
@@ -133,17 +133,17 @@ export function textToSettings(text: string): settingsType {
         name = line.split(':')[1].trim()
       } else if (line.startsWith('A4:')) {
         const val = line.split(':')[1].trim()
-        a4 = parseNumberOrDefault(val, settings.A4Default)
-        if (val === 'default') a4 = undefined
+        A4 = parseNumberOrDefault(val, settings.A4Default)
+        if (val === 'default') A4 = undefined
       } else if (line.startsWith('Transpose:')) {
         const val = line.split(':')[1].trim()
-        transpose = parseNumberOrDefault(val, settings.Transpose)
-        if (val === 'default') transpose = undefined
+        Transpose = parseNumberOrDefault(val, settings.Transpose)
+        if (val === 'default') Transpose = undefined
       } else {
         // Parse note offsets, e.g. C#: +0.0
-        const m = line.match(/^([A-G]#?):\s*([+-]?\d+(\.\d+)?)/)
-        if (m && noteNames.includes(m[1] as any)) {
-          offsets[m[1]] = Number(m[2])
+        const match = line.match(/^([A-G]#?):\s*([+-]?\d+(\.\d+)?)/)
+        if (match && noteNames.includes(match[1] as any)) {
+          offsets[match[1]] = Number(match[2])
         }
       }
     }
@@ -151,9 +151,10 @@ export function textToSettings(text: string): settingsType {
     if (presetKeys.includes(mode as any)) {
       settings.presets[mode as (typeof presetKeys)[number]]!.Temperament = {
         name,
-        A4: a4,
-        Transpose: transpose,
-        offsets: Object.fromEntries(noteNames.map((n) => [n, offsets[n] ?? 0])),
+        A4,
+        Transpose,
+        // @ts-expect-error offsets
+        offsets: Object.fromEntries(noteNames.map((note) => [note, offsets[note] ?? 0])),
       }
     }
   }
