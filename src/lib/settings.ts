@@ -196,16 +196,16 @@ export const settings: settingsType = {
     CST3: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'Drop F/C',
+        name: 'C# Standard, Low F',
         A4: undefined,
         Transpose: undefined,
         strings: [
-          { note: 'D4', offset: 0.0 },
-          { note: 'A3', offset: 0.0 },
-          { note: 'F3', offset: 0.0 },
-          { note: 'C3', offset: 0.0 },
-          { note: 'G2', offset: 0.0 },
-          { note: 'C2', offset: 0.0 },
+          { note: 'D#4', offset: 0.0 },
+          { note: 'A#3', offset: 0.0 },
+          { note: 'F#3', offset: 0.0 },
+          { note: 'C#3', offset: 0.0 },
+          { note: 'G#2', offset: 0.0 },
+          { note: 'C#2', offset: 0.0 },
           { note: 'F1', offset: 0.0 },
         ],
       },
