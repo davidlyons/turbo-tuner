@@ -55,7 +55,7 @@ export const settings: settingsType = {
     GUIT: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'Standard',
+        name: 'B Standard',
         A4: undefined,
         Transpose: undefined,
         strings: [
@@ -196,7 +196,7 @@ export const settings: settingsType = {
     CST3: {
       mode: 'OpenTuning',
       OpenTuning: {
-        name: 'C# Standard, Low F',
+        name: 'D# Standard, Low F',
         A4: undefined,
         Transpose: undefined,
         strings: [
@@ -205,7 +205,7 @@ export const settings: settingsType = {
           { note: 'F#3', offset: 0.0 },
           { note: 'C#3', offset: 0.0 },
           { note: 'G#2', offset: 0.0 },
-          { note: 'C#2', offset: 0.0 },
+          { note: 'D#2', offset: 0.0 },
           { note: 'F1', offset: 0.0 },
         ],
       },
