@@ -89,7 +89,7 @@ export function TunerForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid-cols-2 gap-8 md:grid">
+          <div className="grid-cols-2 gap-12 md:grid">
             <div className="col-span-1">
               <h1 className="mb-8 text-center text-3xl md:text-start md:text-4xl">
                 Turbo Tuner Editor
