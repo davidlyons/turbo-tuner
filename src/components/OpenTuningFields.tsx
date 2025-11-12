@@ -99,12 +99,15 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                         offset: 0.0,
                       })
                     }
+
+                    if (isPlayingAll) playAll(newArr)
                   } else if (newCount < newArr.length) {
                     // Remove strings from the end
                     newArr = newArr.slice(0, newCount)
 
+                    if (isPlayingAll) playAll(newArr)
                     // if audio is playing for a removed string, stop audio
-                    if (playingIndex !== null && playingIndex > newCount - 1) stopAudio()
+                    else if (playingIndex !== null && playingIndex > newCount - 1) stopAudio()
                   }
                   field.onChange(newArr)
                 }}
