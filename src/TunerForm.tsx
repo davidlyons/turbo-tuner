@@ -48,7 +48,6 @@ export function TunerForm() {
   type TunerModel = 'mini' | 'fullsize'
   const [activeModel, setActiveModel] = useState<TunerModel>('mini')
 
-  // 1. Define your form.
   const form = useForm<settingsType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -57,9 +56,7 @@ export function TunerForm() {
 
   const presetMode = form.watch(`presets.${activePreset}.mode`)
 
-  // 2. Define a submit handler.
   function onSubmit(values: settingsType) {
-    // Do something with the form values. This will be type-safe and validated.
     const text = settingsToText(values)
     const blob = new Blob([text], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
@@ -72,7 +69,6 @@ export function TunerForm() {
     URL.revokeObjectURL(url)
   }
 
-  // Handler for file input to import settings
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return

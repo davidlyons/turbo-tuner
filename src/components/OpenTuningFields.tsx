@@ -25,7 +25,11 @@ import { NumberInput } from '@/components/NumberInput'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Play, Square } from 'lucide-react'
+
+import { useEffect } from 'react'
+import { useSampler } from '@/hooks/useSampler'
+import { cn } from '@/lib/utils'
 
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
@@ -60,6 +64,14 @@ type TuningString = { note: string; offset: number }
 export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysType }) => {
   const form = useFormContext<settingsType>()
 
+  const { isAudioLoaded, playingIndex, isPlayingAll, playNote, playAll, stopAudio } = useSampler()
+
+  // if activePreset changes and audio is playing, stop audio
+  useEffect(() => {
+    if (playingIndex !== null) stopAudio()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePreset])
+
   return (
     <>
       {/* Strings array */}
@@ -71,7 +83,7 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
           <FormItem>
             <FormLabel>Strings</FormLabel>
 
-            {/* Dropdown to select number of strings */}
+            {/* Number of strings */}
             <div className="mb-2">
               <Select
                 value={String(field.value.length)}
@@ -90,6 +102,9 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                   } else if (newCount < newArr.length) {
                     // Remove strings from the end
                     newArr = newArr.slice(0, newCount)
+
+                    // if audio is playing for a removed string, stop audio
+                    if (playingIndex !== null && playingIndex > newCount - 1) stopAudio()
                   }
                   field.onChange(newArr)
                 }}
@@ -122,6 +137,9 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                       note: shiftNote(string.note, -1),
                     }))
                     field.onChange(newArr)
+
+                    if (isPlayingAll) playAll(newArr)
+                    else if (playingIndex !== null) playNote(newArr[playingIndex], playingIndex)
                   }}
                 >
                   <ChevronDown size={15} />
@@ -138,11 +156,33 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                       note: shiftNote(string.note, 1),
                     }))
                     field.onChange(newArr)
+
+                    if (isPlayingAll) playAll(newArr)
+                    else if (playingIndex !== null) playNote(newArr[playingIndex], playingIndex)
                   }}
                 >
                   <ChevronUp size={15} />
                 </Button>
               </ButtonGroup>
+
+              {/* Play/Stop all button */}
+              <Button
+                type="button"
+                variant="outline"
+                className={cn('ml-auto', isPlayingAll && 'dark:border-red-500')}
+                size="icon"
+                aria-label={isPlayingAll ? 'Stop all' : 'Play all'}
+                onClick={() => {
+                  if (isPlayingAll) {
+                    stopAudio()
+                  } else {
+                    playAll(field.value)
+                  }
+                }}
+                disabled={!isAudioLoaded}
+              >
+                {isPlayingAll ? <Square /> : <Play />}
+              </Button>
             </div>
 
             {/* strings */}
@@ -150,7 +190,7 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
               {Array.isArray(field.value) &&
                 field.value.map((stringObj, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <span className="w-8 shrink-0">{index + 1}</span>
+                    <span className="w-8 shrink-0 opacity-80">{index + 1}</span>
 
                     {/* Note */}
                     <div className="flex grow items-center">
@@ -172,6 +212,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                           const newArr = [...field.value]
                           newArr[index] = { ...newArr[index], note: val }
                           field.onChange(newArr)
+
+                          if (playingIndex === index) playNote(newArr[index], index)
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -183,6 +225,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                               note: shiftNote(stringObj.note, semitone),
                             }
                             field.onChange(newArr)
+
+                            if (playingIndex === index) playNote(newArr[index], index)
                           }
                         }}
                       />
@@ -204,6 +248,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                               note: shiftNote(stringObj.note, 1),
                             }
                             field.onChange(newArr)
+
+                            if (playingIndex === index) playNote(newArr[index], index)
                           }}
                         >
                           <ChevronUp size={15} />
@@ -223,6 +269,8 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                               note: shiftNote(stringObj.note, -1),
                             }
                             field.onChange(newArr)
+
+                            if (playingIndex === index) playNote(newArr[index], index)
                           }}
                         >
                           <ChevronDown size={15} />
@@ -243,6 +291,28 @@ export const OpenTuningFields = ({ activePreset }: { activePreset: presetKeysTyp
                       min={-50}
                       max={50}
                     />
+
+                    {/* Play/Stop button */}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={cn(playingIndex === index && 'dark:border-red-500')}
+                      size="icon"
+                      aria-label={
+                        playingIndex === index ? `Stop ${stringObj.note}` : `Play ${stringObj.note}`
+                      }
+                      onClick={() => {
+                        if (playingIndex === index) {
+                          stopAudio()
+                        } else {
+                          playNote(stringObj, index)
+                        }
+                      }}
+                      disabled={!isAudioLoaded}
+                      tabIndex={-1}
+                    >
+                      {playingIndex === index ? <Square /> : <Play />}
+                    </Button>
                   </div>
                 ))}
             </div>
