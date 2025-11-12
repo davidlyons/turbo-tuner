@@ -41,7 +41,6 @@ import { OpenTuningFields } from '@/components/OpenTuningFields'
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { CircleHelp } from 'lucide-react'
-import Logo from '../public/favicon.svg?react'
 
 export function TunerForm() {
   const [activePreset, setActivePreset] = useState<presetKeysType>('GUIT')
