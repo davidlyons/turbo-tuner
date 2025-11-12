@@ -5,6 +5,7 @@
 
 @theme {
   --font-sans: 'Inter Variable', sans-serif;
+  --breakpoint-md: 56rem;
 }
 
 /* @utility container {

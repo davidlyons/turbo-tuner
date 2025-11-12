@@ -41,6 +41,7 @@ import { OpenTuningFields } from '@/components/OpenTuningFields'
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { CircleHelp } from 'lucide-react'
+import Logo from '../public/favicon.svg?react'
 
 export function TunerForm() {
   const [activePreset, setActivePreset] = useState<presetKeysType>('GUIT')
@@ -87,7 +88,14 @@ export function TunerForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid-cols-2 gap-12 md:grid">
             <div className="col-span-1">
-              <h1 className="mb-8 text-center text-3xl md:text-start md:text-4xl">
+              <h1
+                className="mb-8 flex items-center justify-center text-2xl md:justify-start
+                  md:text-4xl"
+              >
+                <div
+                  className="me-4 size-8 shrink-0 animate-[spin_3s_ease-out_forwards] rounded-full
+                    border-4 border-dotted border-red-500 md:size-9"
+                />{' '}
                 Turbo Tuner Editor
               </h1>
 
