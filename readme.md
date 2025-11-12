@@ -7,13 +7,14 @@
 
 Tools:
 
-- [Vite](https://vite.dev)
 - [React](https://react.dev)
 - [TypeScript](https://www.typescriptlang.org)
 - [shadcn/ui](https://ui.shadcn.com)
 - [Tailwind](https://tailwindcss.com)
 - [React Hook Form](https://react-hook-form.com)
 - [Zod](https://zod.dev)
+- [Tone.js](https://github.com/Tonejs/Tone.js)
+- [Vite](https://vite.dev)
 
 Tuning UI References:
 
