@@ -33,7 +33,7 @@ import { cn } from '@/lib/utils'
 
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
-function shiftNote(noteWithOctave: string, semitones: number) {
+const shiftNote = (noteWithOctave: string, semitones: number) => {
   const match = noteWithOctave.match(noteRegex)
 
   if (!match) return noteWithOctave

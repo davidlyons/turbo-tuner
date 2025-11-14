@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import * as Tone from 'tone'
-import { Loop, Sampler } from 'tone'
 import A4 from '@/notes/A4.mp3'
 
 type TuningString = { note: string; offset: number }
@@ -21,15 +20,14 @@ const getFrequency = ({ note, offset }: TuningString) => {
 }
 
 export const useSampler = () => {
+  const samplerRef = useRef<Tone.Sampler | null>(null)
+  const loopRef = useRef<Tone.Loop | null>(null)
   const [isAudioLoaded, setAudioLoaded] = useState(false)
-  const sampler = useRef<Sampler | null>(null)
-  const loopRef = useRef<Loop | null>(null)
-
   const [playingIndex, setPlayingIndex] = useState<number | null>(null)
   const [isPlayingAll, setIsPlayingAll] = useState(false)
 
   useEffect(() => {
-    sampler.current = new Sampler(
+    samplerRef.current = new Tone.Sampler(
       { A4 },
       {
         onload: () => setAudioLoaded(true),
@@ -37,7 +35,7 @@ export const useSampler = () => {
     ).toDestination()
 
     return () => {
-      sampler.current?.dispose()
+      samplerRef.current?.dispose()
       loopRef.current?.dispose()
     }
   }, [])
@@ -56,8 +54,8 @@ export const useSampler = () => {
     setPlayingIndex(index)
     const frequency = getFrequency(string)
 
-    loopRef.current = new Loop((time) => {
-      sampler.current?.triggerAttackRelease(frequency, '2n', time)
+    loopRef.current = new Tone.Loop((time) => {
+      samplerRef.current?.triggerAttackRelease(frequency, '2n', time)
     }, '2n').start(0)
 
     Tone.getTransport().start()
@@ -72,10 +70,10 @@ export const useSampler = () => {
     loopRef.current?.stop()
     setIsPlayingAll(true)
 
-    loopRef.current = new Loop((time) => {
+    loopRef.current = new Tone.Loop((time) => {
       setPlayingIndex(index)
       const frequency = getFrequency(strings[index])
-      sampler.current?.triggerAttackRelease(frequency, '2n', time)
+      samplerRef.current?.triggerAttackRelease(frequency, '2n', time)
       index = (index - 1 + strings.length) % strings.length
     }, '2n').start(0)
 

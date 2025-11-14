@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+// types
+
 export const presetKeysSchema = z.enum(['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'])
 
 export type presetKeysType = z.infer<typeof presetKeysSchema>
@@ -45,6 +47,8 @@ export const formSchema = z.object({
 })
 
 export type settingsType = z.infer<typeof formSchema>
+
+// default settings
 
 export const settings: settingsType = {
   A4Default: 440.0,

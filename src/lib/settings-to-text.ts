@@ -1,6 +1,6 @@
 import { type settingsType, type presetKeysType } from './settings'
 
-export function settingsToText(values: settingsType): string {
+export const settingsToText = (values: settingsType): string => {
   // Helper for boolean to 0/1
   const boolToNum = (b: boolean) => (b ? 1 : 0)
 

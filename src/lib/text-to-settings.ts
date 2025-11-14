@@ -4,17 +4,14 @@ const presetKeys = ['GUIT', 'BASS', 'CST1', 'CST2', 'CST3'] as const
 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const
 
 // Helper to parse a number or return a default value
-function parseNumberOrDefault(val: string, def?: number) {
+const parseNumberOrDefault = (val: string, def?: number) => {
   if (val === 'default') return def
   const n = Number(val)
   return isNaN(n) ? def : n
 }
 
-/**
- * Parses a settings.txt string and returns a settings object.
- * @param text The settings.txt file contents
- */
-export function textToSettings(text: string): settingsType {
+// Parse a settings.txt string and return a settings object
+export const textToSettings = (text: string): settingsType => {
   // Start with a deep clone of the default settings as a base
   const settings: settingsType = JSON.parse(JSON.stringify(defaultSettings))
 

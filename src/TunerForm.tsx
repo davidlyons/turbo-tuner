@@ -42,7 +42,7 @@ import { OpenTuningFields } from '@/components/OpenTuningFields'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { CircleHelp } from 'lucide-react'
 
-export function TunerForm() {
+export const TunerForm = () => {
   const [activePreset, setActivePreset] = useState<presetKeysType>('GUIT')
 
   type TunerModel = 'mini' | 'fullsize'
@@ -56,7 +56,7 @@ export function TunerForm() {
 
   const presetMode = form.watch(`presets.${activePreset}.mode`)
 
-  function onSubmit(values: settingsType) {
+  const onSubmit = (values: settingsType) => {
     const text = settingsToText(values)
     const blob = new Blob([text], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
